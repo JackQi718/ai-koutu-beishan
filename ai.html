@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI智能抠图 - 专业的本地图像背景移除工具</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#165DFF',
+            secondary: '#36D399',
+            accent: '#FF6B35',
+            dark: '#1E293B',
+            light: '#F8FAFC'
+          },
+          fontFamily: {
+            inter: ['Inter', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+      .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+      }
+    }
+  </style>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .feature-icon {
+      transition: transform 0.3s ease;
+    }
+    .feature-card:hover .feature-icon {
+      transform: scale(1.1);
+    }
+    .hero-gradient {
+      background: linear-gradient(135deg, #165DFF 0%, #0A2463 100%);
+    }
+    .section-divider {
+      height: 3px;
+      width: 50px;
+      margin: 1.5rem auto;
+      background-color: #165DFF;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+  <!-- 导航栏 -->
+  <header id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-sm shadow-sm">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center py-4">
+        <div class="flex items-center space-x-2">
+          <i class="fa fa-magic text-primary text-2xl"></i>
+          <span class="text-xl font-bold text-primary">AI智能抠图</span>
+        </div>
+        
+        <!-- 桌面导航 -->
+        <nav class="hidden md:flex space-x-8">
+          <a href="#features" class="text-gray-600 hover:text-primary transition-colors">核心功能</a>
+          <a href="#tech" class="text-gray-600 hover:text-primary transition-colors">技术特点</a>
+          <a href="#ui" class="text-gray-600 hover:text-primary transition-colors">用户界面</a>
+          <a href="#examples" class="text-gray-600 hover:text-primary transition-colors">使用示例</a>
+          <a href="#contact" class="text-gray-600 hover:text-primary transition-colors">联系我们</a>
+        </nav>
+        
+        <!-- 下载按钮 -->
+        <a href="#download" class="hidden md:block bg-primary hover:bg-primary/90 text-white font-medium py-2 px-4 rounded-lg transition-all shadow-md hover:shadow-lg">
+          立即下载
+        </a>
+        
+        <!-- 移动端菜单按钮 -->
+        <button id="menu-toggle" class="md:hidden text-gray-600 focus:outline-none">
+          <i class="fa fa-bars text-xl"></i>
+        </button>
+      </div>
+    </div>
+    
+    <!-- 移动端导航菜单 -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+      <div class="container mx-auto px-4 py-3 space-y-3">
+        <a href="#features" class="block text-gray-600 hover:text-primary py-2">核心功能</a>
+        <a href="#tech" class="block text-gray-600 hover:text-primary py-2">技术特点</a>
+        <a href="#ui" class="block text-gray-600 hover:text-primary py-2">用户界面</a>
+        <a href="#examples" class="block text-gray-600 hover:text-primary py-2">使用示例</a>
+        <a href="#contact" class="block text-gray-600 hover:text-primary py-2">联系我们</a>
+        <a href="#download" class="block bg-primary text-white font-medium py-2 px-4 rounded-lg text-center">
+          立即下载
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 英雄区域 -->
+  <section class="hero-gradient pt-28 pb-20 md:pt-36 md:pb-28 text-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center">
+        <div class="md:w-1/2 mb-10 md:mb-0">
+          <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-shadow mb-6">
+            AI驱动的<br>智能抠图工具
+          </h1>
+          <p class="text-[clamp(1rem,2vw,1.25rem)] text-blue-100 mb-8 max-w-lg">
+            基于先进AI模型，自动移除图像背景，本地化运行保护隐私，简单高效地完成专业级抠图任务。
+          </p>
+          <div class="flex flex-col sm:flex-row gap-4">
+            <a href="#download" class="bg-white text-primary hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-all shadow-lg hover:shadow-xl text-center">
+              <i class="fa fa-download mr-2"></i>免费下载
+            </a>
+            <a href="#features" class="bg-transparent border-2 border-white text-white hover:bg-white/10 font-medium py-3 px-8 rounded-lg transition-all text-center">
+              了解更多 <i class="fa fa-arrow-right ml-2"></i>
+            </a>
+          </div>
+        </div>
+        <div class="md:w-1/2">
+          <div class="relative">
+            <img src="https://picsum.photos/id/1/600/400" alt="AI智能抠图演示" class="rounded-xl shadow-2xl w-full">
+            <div class="absolute -bottom-6 -left-6 bg-secondary text-white p-4 rounded-lg shadow-lg hidden md:block">
+              <p class="font-medium">自动识别主体</p>
+              <p class="text-sm opacity-90">精准度达99.8%</p>
+            </div>
+            <div class="absolute -top-6 -right-6 bg-accent text-white p-4 rounded-lg shadow-lg hidden md:block">
+              <p class="font-medium">本地处理</p>
+              <p class="text-sm opacity-90">保护您的隐私</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 核心功能 -->
+  <section id="features" class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4">核心功能</h2>
+        <div class="section-divider"></div>
+        <p class="text-gray-600 max-w-2xl mx-auto">我们的AI抠图工具提供一系列强大功能，满足您的各种图像处理需求</p>
+      </div>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- 功能卡片1 -->
+        <div class="feature-card bg-gray-50 rounded-xl p-6 shadow-md hover:shadow-lg transition-all">
+          <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
+            <i class="fa fa-magic text-primary text-2xl feature-icon"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">智能抠图</h3>
+          <p class="text-gray-600">基于先进的AI模型自动移除图像背景，精准识别图像主体，无需手动调整。</p>
+        </div>
+        
+        <!-- 功能卡片2 -->
+        <div class="feature-card bg-gray-50 rounded-xl p-6 shadow-md hover:shadow-lg transition-all">
+          <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
+            <i class="fa fa-user text-primary text-2xl feature-icon"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">人像优化</h3>
+          <p class="text-gray-600">专门针对人像进行优化处理，精准保留头发丝等细节，让抠图效果更自然。</p>
+        </div>
+        
+        <!-- 功能卡片3 -->
+        <div class="feature-card bg-gray-50 rounded-xl p-6 shadow-md hover:shadow-lg transition-all">
+          <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
+            <i class="fa fa-file-image-o text-primary text-2xl feature-icon"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">多格式支持</h3>
+          <p class="text-gray-600">支持JPG、PNG、BMP、GIF、WebP等多种图像格式，满足不同场景需求。</p>
+        </div>
+        
+        <!-- 功能卡片4 -->
+        <div class="feature-card bg-gray-50 rounded-xl p-6 shadow-md hover:shadow-lg transition-all">
+          <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
+            <i class="fa fa-eye text-primary text-2xl feature-icon"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">实时预览</h3>
+          <p class="text-gray-600">即时查看处理结果，调整参数实时反馈，提升工作效率。</p>
+        </div>
+        
+        <!-- 功能卡片5 -->
+        <div class="feature-card bg-gray-50 rounded-xl p-6 shadow-md hover:shadow-lg transition-all">
+          <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-5">
+            <i class="fa fa-download text-primary text-2xl feature-icon"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">一键下载</h3>
+          <p class="text-gray-600">方便保存处理后的图像，支持多种输出格式和质量选择。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 技术特点 -->
+  <section id="tech" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4">技术特点</h2>
+        <div class="section-divider"></div>
+        <p class="text-gray-600 max-w-2xl mx-auto">领先的技术架构，确保高效、安全、稳定的用户体验</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div>
+          <img src="https://picsum.photos/id/180/600/400" alt="技术架构" class="rounded-xl shadow-xl w-full">
+        </div>
+        
+        <div class="space-y-6">
+          <!-- 技术特点1 -->
+          <div class="flex gap-4">
+            <div class="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fa fa-lock text-secondary text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">本地化运行</h3>
+              <p class="text-gray-600">完全在本地运行，无需上传图像到云端，最大程度保护用户隐私和数据安全。</p>
+            </div>
+          </div>
+          
+          <!-- 技术特点2 -->
+          <div class="flex gap-4">
+            <div class="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fa fa-bolt text-secondary text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">GPU加速</h3>
+              <p class="text-gray-600">支持CUDA加速技术，大幅提升图像处理速度，处理大型图像也能保持流畅。</p>
+            </div>
+          </div>
+          
+          <!-- 技术特点3 -->
+          <div class="flex gap-4">
+            <div class="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fa fa-microchip text-secondary text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">内存优化</h3>
+              <p class="text-gray-600">智能内存管理系统，有效利用系统资源，支持大图像处理而不占用过多内存。</p>
+            </div>
+          </div>
+          
+          <!-- 技术特点4 -->
+          <div class="flex gap-4">
+            <div class="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fa fa-exclamation-triangle text-secondary text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">错误处理</h3>
+              <p class="text-gray-600">完善的错误处理和恢复机制，确保软件稳定运行，即使遇到异常也能优雅处理。</p>
+            </div>
+          </div>
+          
+          <!-- 技术特点5 -->
+          <div class="flex gap-4">
+            <div class="w-12 h-12 bg-secondary/20 rounded-lg flex items-center justify-center flex-shrink-0">
+              <i class="fa fa-tachometer text-secondary text-xl"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold mb-2">性能监控</h3>
+              <p class="text-gray-600">实时监控系统性能，根据硬件配置自动调整参数，确保最佳处理效果。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 用户界面 -->
+  <section id="ui" class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4">用户界面</h2>
+        <div class="section-divider"></div>
+        <p class="text-gray-600 max-w-2xl mx-auto">简洁直观的操作界面，让专业抠图变得轻松简单</p>
+      </div>
+      
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <div class="lg:col-span-2 space-y-8">
+          <!-- UI特点1 -->
+          <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+            <div class="flex items-center mb-4">
+              <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                <i class="fa fa-language text-primary"></i>
+              </div>
+              <h3 class="text-lg font-semibold">全中文界面</h3>
+            </div>
+            <p class="text-gray-600">完全中文化的用户界面，符合中文用户使用习惯，降低学习成本。</p>
+          </div>
+          
+          <!-- UI特点2 -->
+          <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+            <div class="flex items-center mb-4">
+              <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                <i class="fa fa-mobile text-primary"></i>
+              </div>
+              <h3 class="text-lg font-semibold">响应式设计</h3>
+            </div>
+            <p class="text-gray-600">适配不同屏幕尺寸，在电脑、平板等设备上都能获得良好的操作体验。</p>
+          </div>
+          
+          <!-- UI特点3 -->
+          <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+            <div class="flex items-center mb-4">
+              <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                <i class="fa fa-mouse-pointer text-primary"></i>
+              </div>
+              <h3 class="text-lg font-semibold">直观操作</h3>
+            </div>
+            <p class="text-gray-600">简单易懂的操作流程，三步即可完成抠图，即使是新手也能快速上手。</p>
+          </div>
+          
+          <!-- UI特点4 -->
+          <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+            <div class="flex items-center mb-4">
+              <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                <i class="fa fa-image text-primary"></i>
+              </div>
+              <h3 class="text-lg font-semibold">示例图像</h3>
+            </div>
+            <p class="text-gray-600">提供示例图像快速测试，帮助用户了解软件功能和使用方法。</p>
+          </div>
+          
+          <!-- UI特点5 -->
+          <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+            <div class="flex items-center mb-4">
+              <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mr-4">
+                <i class="fa fa-info-circle text-primary"></i>
+              </div>
+              <h3 class="text-lg font-semibold">状态提示</h3>
+            </div>
+            <p class="text-gray-600">清晰的操作状态反馈，让用户随时了解当前处理进度和结果。</p>
+          </div>
+        </div>
+        
+        <div class="lg:col-span-3">
+          <div class="relative">
+            <img src="https://picsum.photos/id/0/800/600" alt="用户界面展示" class="rounded-xl shadow-xl w-full">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent rounded-xl flex items-end">
+              <div class="p-6 text-white">
+                <h3 class="text-xl font-semibold mb-2">简洁高效的操作界面</h3>
+                <p>直观的布局设计，让每一个功能都触手可及</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4 mt-4">
+            <img src="https://picsum.photos/id/2/400/300" alt="界面细节1" class="rounded-lg shadow-md w-full">
+            <img src="https://picsum.photos/id/42/400/300" alt="界面细节2" class="rounded-lg shadow-md w-full">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 使用示例 -->
+  <section id="examples" class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4">使用示例</h2>
+        <div class="section-divider"></div>
+        <p class="text-gray-600 max-w-2xl mx-auto">看看我们的AI抠图工具能为您带来什么效果</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- 示例1 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all">
+          <div class="p-4 border-b">
+            <h3 class="font-semibold">人像抠图</h3>
+            <p class="text-sm text-gray-500">精准保留头发细节</p>
+          </div>
+          <div class="p-4">
+            <div class="mb-3">
+              <p class="text-sm font-medium text-gray-600 mb-1">原图</p>
+              <img src="https://picsum.photos/id/64/400/300" alt="人像原图" class="w-full rounded">
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-600 mb-1">抠图后</p>
+              <img src="https://picsum.photos/id/64/400/300?grayscale" alt="人像抠图结果" class="w-full rounded">
+            </div>
+          </div>
+        </div>
+        
+        <!-- 示例2 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all">
+          <div class="p-4 border-b">
+            <h3 class="font-semibold">物体抠图</h3>
+            <p class="text-sm text-gray-500">清晰识别复杂轮廓</p>
+          </div>
+          <div class="p-4">
+            <div class="mb-3">
+              <p class="text-sm font-medium text-gray-600 mb-1">原图</p>
+              <img src="https://picsum.photos/id/96/400/300" alt="物体原图" class="w-full rounded">
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-600 mb-1">抠图后</p>
+              <img src="https://picsum.photos/id/96/400/300?grayscale" alt="物体抠图结果" class="w-full rounded">
+            </div>
+          </div>
+        </div>
+        
+        <!-- 示例3 -->
+        <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all">
+          <div class="p-4 border-b">
+            <h3 class="font-semibold">风景抠图</h3>
+            <p class="text-sm text-gray-500">智能识别主体景物</p>
+          </div>
+          <div class="p-4">
+            <div class="mb-3">
+              <p class="text-sm font-medium text-gray-600 mb-1">原图</p>
+              <img src="https://picsum.photos/id/29/400/300" alt="风景原图" class="w-full rounded">
+            </div>
+            <div>
+              <p class="text-sm font-medium text-gray-600 mb-1">抠图后</p>
+              <img src="https://picsum.photos/id/29/400/300?grayscale" alt="风景抠图结果" class="w-full rounded">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 下载区域 -->
+  <section id="download" class="py-20 bg-primary text-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">立即获取AI智能抠图工具</h2>
+        <p class="max-w-2xl mx-auto opacity-90">开源免费，持续更新，欢迎体验并参与项目开发</p>
+      </div>
+      
+      <div class="flex flex-col md:flex-row justify-center gap-6 max-w-3xl mx-auto">
+        <a href="#" class="bg-white text-primary hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
+          <i class="fa fa-windows text-2xl"></i>
+          <div class="text-left">
+            <div class="text-xs opacity-80">下载适用于</div>
+            <div>Windows</div>
+          </div>
+        </a>
+        
+        <a href="#" class="bg-white text-primary hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
+          <i class="fa fa-apple text-2xl"></i>
+          <div class="text-left">
+            <div class="text-xs opacity-80">下载适用于</div>
+            <div>macOS</div>
+          </div>
+        </a>
+        
+        <a href="#" class="bg-white text-primary hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-3">
+          <i class="fa fa-linux text-2xl"></i>
+          <div class="text-left">
+            <div class="text-xs opacity-80">下载适用于</div>
+            <div>Linux</div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="mt-12 text-center">
+        <p class="mb-4">或访问开源仓库</p>
+        <a href="#" class="inline-flex items-center gap-2 bg-dark hover:bg-gray-800 text-white font-medium py-2 px-6 rounded-lg transition-all">
+          <i class="fa fa-github text-xl"></i>
+          查看源代码
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 联系我们 -->
+  <section id="contact" class="py-20 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-4">联系我们</h2>
+        <div class="section-divider"></div>
+        <p class="text-gray-600 max-w-2xl mx-auto">有任何问题、建议或合作意向，欢迎与我们联系</p>
+      </div>
+      
+      <div class="max-w-3xl mx-auto bg-gray-50 rounded-2xl p-8 shadow-md">
+        <div class="flex flex-col md:flex-row items-center gap-8">
+          <div class="md:w-1/3">
+            <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-4 mx-auto">
+              <i class="fa fa-user text-primary text-3xl"></i>
+            </div>
+            <h3 class="text-xl font-semibold text-center mb-2">北山</h3>
+            <p class="text-gray-600 text-center">项目作者</p>
+          </div>
+          
+          <div class="md:w-2/3 w-full">
+            <div class="space-y-4">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <i class="fa fa-envelope text-primary"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">邮箱</p>
+                  <p class="font-medium">blacklaw@foxmail.com</p>
+                </div>
+              </div>
+              
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <i class="fa fa-weixin text-primary"></i>
+                </div>
+                <div>
+                  <p class="text-sm text-gray-500">微信</p>
+                  <p class="font-medium">BEISHAN5678</p>
+                </div>
+              </div>
+              
+              <div class="pt-4">
+                <a href="mailto:blacklaw@foxmail.com" class="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-lg transition-all">
+                  发送邮件 <i class="fa fa-paper-plane ml-1"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="bg-dark text-white py-12">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-6 md:mb-0">
+          <div class="flex items-center space-x-2 mb-2">
+            <i class="fa fa-magic text-primary text-2xl"></i>
+            <span class="text-xl font-bold">AI智能抠图</span>
+          </div>
+          <p class="text-gray-400 text-sm">开源AI抠图工具，让图像处理更简单</p>
+        </div>
+        
+        <div class="flex flex-wrap justify-center gap-x-8 gap-y-4">
+          <a href="#features" class="text-gray-400 hover:text-white transition-colors">核心功能</a>
+          <a href="#tech" class="text-gray-400 hover:text-white transition-colors">技术特点</a>
+          <a href="#ui" class="text-gray-400 hover:text-white transition-colors">用户界面</a>
+          <a href="#examples" class="text-gray-400 hover:text-white transition-colors">使用示例</a>
+          <a href="#download" class="text-gray-400 hover:text-white transition-colors">下载</a>
+          <a href="#contact" class="text-gray-400 hover:text-white transition-colors">联系我们</a>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+        <p>© 2023 AI智能抠图 - 开源项目 | 作者：北山</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // 移动端菜单切换
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      const icon = menuToggle.querySelector('i');
+      if (mobileMenu.classList.contains('hidden')) {
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      } else {
+        icon.classList.remove('fa-bars');
+        icon.classList.add('fa-times');
+      }
+    });
+    
+    // 导航栏滚动效果
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('shadow-md');
+        navbar.classList.remove('shadow-sm');
+      } else {
+        navbar.classList.remove('shadow-md');
+        navbar.classList.add('shadow-sm');
+      }
+    });
+    
+    // 点击导航链接关闭移动菜单
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        const icon = menuToggle.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      });
+    });
+  </script>
+</body>
+</html>
